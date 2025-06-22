@@ -1,0 +1,94 @@
+<div class="moodboard-container"
+     [style.background-color]="backgroundColor"
+     [class.grid-enabled]="showGrid">
+
+  <div #moodboardArea
+       class="moodboard-area"
+       (mousemove)="onMouseMove($event)"
+       (mouseup)="onMouseUp()"
+       (mouseleave)="onMouseUp()"
+       id="moodboard">
+
+    <!-- Grid Background -->
+    <div class="grid-background" *ngIf="showGrid"></div>
+
+    <!-- Mood Board Items -->
+    <div *ngFor="let item of items; trackBy: trackByItemId"
+         class="moodboard-item"
+         [class.selected]="selectedItem?.id === item.id"
+         [class.dragging]="isDragging && dragItem?.id === item.id"
+         [style.left.px]="item.x"
+         [style.top.px]="item.y"
+         [style.z-index]="item.zIndex"
+         (mousedown)="onMouseDown($event, item)"
+         (click)="selectItem(item)">
+
+      <!-- Image Item -->
+      <img *ngIf="item.type === 'image'"
+           [src]="item.content"
+           [style.width.px]="item.width"
+           [style.height.px]="item.height"
+           alt="Mood board image"
+           class="item-image"
+           draggable="false">
+
+      <!-- Text Item -->
+      <div *ngIf="item.type === 'text'"
+           class="text-item"
+           [attr.contenteditable]="true"
+           [style.color]="item.color"
+           [style.font-size.px]="item.fontSize"
+           [style.font-family]="item.fontFamily"
+           [style.width.px]="item.width"
+           [style.height.px]="item.height"
+           (focus)="onTextFocus()"
+           (blur)="onTextBlur()"
+           (input)="onTextInput($event, item)"
+           (keydown)="onTextKeyDown($event, item)"
+           (click)="$event.stopPropagation()"
+           [textContent]="item.content">
+      </div>
+
+      <!-- Sticker Item -->
+      <img *ngIf="item.type === 'sticker'"
+           [src]="item.content"
+           [style.width.px]="item.width"
+           [style.height.px]="item.height"
+           alt="Sticker"
+           class="item-sticker"
+           draggable="false">
+
+      <!-- Delete Button - Always visible -->
+      <button class="delete-btn" (click)="deleteItem(item); $event.stopPropagation()">
+        ×
+      </button>
+
+      <!-- Selection Overlay -->
+      <div class="selection-overlay" *ngIf="selectedItem?.id === item.id">
+        <div class="resize-handle resize-handle-nw"></div>
+        <div class="resize-handle resize-handle-ne"></div>
+        <div class="resize-handle resize-handle-sw"></div>
+        <div class="resize-handle resize-handle-se"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="items.length === 0">
+    <div class="empty-icon">🎨</div>
+    <h3>Your mood board is empty</h3>
+    <p>Start by adding images, text, or stickers from the toolbar above!</p>
+  </div>
+
+  <!-- Controls -->
+  <div class="moodboard-controls">
+    <button class="control-btn" (click)="toggleGrid()" [class.active]="showGrid">
+      <span class="control-icon">⊞</span>
+      Grid
+    </button>
+    <button class="control-btn" (click)="clearBoard()">
+      <span class="control-icon">🗑️</span>
+      Clear
+    </button>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="toolbar-container">
+  <div class="toolbar-section">
+    <h3>Add Content</h3>
+
+    <!-- Image Upload -->
+    <div class="tool-group">
+      <label class="tool-btn" for="image-upload">
+        <span class="tool-icon">📷</span>
+        <span class="tool-label">Upload Images</span>
+      </label>
+      <input
+        id="image-upload"
+        type="file"
+        multiple
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        style="display: none;">
+    </div>
+
+    <!-- Text Input -->
+    <div class="tool-group">
+      <div class="text-input-container">
+        <input
+          type="text"
+          placeholder="Add text to your mood board..."
+          [(ngModel)]="textInput"
+          (keypress)="onKeyPress($event)"
+          class="text-input">
+        <button
+          class="add-text-btn"
+          (click)="onAddText()"
+          [disabled]="!textInput.trim()">
+          Add
+        </button>
+      </div>
+    </div>
+
+    <!-- Sticker Picker -->
+    <div class="tool-group">
+      <button class="tool-btn" (click)="toggleStickerPicker()">
+        <span class="tool-icon">🎯</span>
+        <span class="tool-label">Stickers</span>
+      </button>
+
+      <div class="picker-dropdown sticker-picker" *ngIf="showStickerPicker">
+        <div class="picker-header">
+          <h4>Choose a Sticker</h4>
+          <button class="close-btn" (click)="showStickerPicker = false">✕</button>
+        </div>
+        <div class="sticker-grid">
+          <button
+            *ngFor="let sticker of stickers"
+            class="sticker-btn"
+            (click)="onAddSticker(sticker)">
+            {{ sticker }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar-section">
+    <h3>Customize</h3>
+
+    <!-- Background Color Picker -->
+    <div class="tool-group">
+      <button class="tool-btn" (click)="toggleColorPicker()">
+        <span class="tool-icon">🎨</span>
+        <span class="tool-label">Background</span>
+        <div class="color-preview" [style.background-color]="selectedColor"></div>
+      </button>
+
+      <div class="picker-dropdown color-picker" *ngIf="showColorPicker">
+        <div class="picker-header">
+          <h4>Choose Background Color</h4>
+          <button class="close-btn" (click)="showColorPicker = false">✕</button>
+        </div>
+        <div class="color-grid">
+          <button
+            *ngFor="let color of backgroundColors"
+            class="color-btn"
+            [style.background-color]="color"
+            [class.selected]="selectedColor === color"
+            (click)="onColorSelect(color)">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar-section">
+    <h3>Quick Actions</h3>
+
+    <!-- Quick Add Text -->
+    <div class="tool-group">
+      <button class="tool-btn quick-btn" (click)="addText.emit('Add your text here')">
+        <span class="tool-icon">📝</span>
+        <span class="tool-label">Quick Text</span>
+      </button>
+    </div>
+
+    <!-- Sample Images -->
+    <div class="tool-group">
+      <button class="tool-btn quick-btn" (click)="addImage.emit('https://picsum.photos/200/200?random=1')">
+        <span class="tool-icon">🖼️</span>
+        <span class="tool-label">Sample Image</span>
+      </button>
+    </div>
+  </div>
+</div>

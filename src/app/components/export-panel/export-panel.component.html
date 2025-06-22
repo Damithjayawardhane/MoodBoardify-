@@ -1,0 +1,87 @@
+<div class="export-panel">
+  <div class="export-header">
+    <h3>Export Your Mood Board</h3>
+    <p>Download your creation as an image</p>
+  </div>
+
+  <div class="export-options">
+    <!-- Quality Selection -->
+    <div class="option-group">
+      <label class="option-label">Quality:</label>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input
+            type="radio"
+            name="quality"
+            value="standard"
+            [checked]="exportQuality === 'standard'"
+            (change)="onQualityChange('standard')">
+          <span class="radio-label">Standard</span>
+        </label>
+        <label class="radio-option">
+          <input
+            type="radio"
+            name="quality"
+            value="high"
+            [checked]="exportQuality === 'high'"
+            (change)="onQualityChange('high')">
+          <span class="radio-label">High</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Format Selection -->
+    <div class="option-group">
+      <label class="option-label">Format:</label>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input
+            type="radio"
+            name="format"
+            value="png"
+            [checked]="exportFormat === 'png'"
+            (change)="onFormatChange('png')">
+          <span class="radio-label">PNG</span>
+        </label>
+        <label class="radio-option">
+          <input
+            type="radio"
+            name="format"
+            value="jpg"
+            [checked]="exportFormat === 'jpg'"
+            (change)="onFormatChange('jpg')">
+          <span class="radio-label">JPG</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Button -->
+  <div class="export-actions">
+    <button
+      class="export-btn"
+      (click)="exportBoard()"
+      [disabled]="!hasItems || isExporting">
+      <span class="export-icon" *ngIf="!isExporting">📥</span>
+      <span class="export-icon loading" *ngIf="isExporting">⏳</span>
+      <span class="export-text">
+        {{ isExporting ? 'Exporting...' : 'Export as Image' }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Export Info -->
+  <div class="export-info" *ngIf="!hasItems">
+    <div class="info-icon">💡</div>
+    <p>Add some content to your mood board to enable export</p>
+  </div>
+
+  <div class="export-tips">
+    <h4>Export Tips:</h4>
+    <ul>
+      <li>High quality exports take longer but look better</li>
+      <li>PNG preserves transparency, JPG is smaller</li>
+      <li>Your mood board will be saved with a timestamp</li>
+    </ul>
+  </div>
+</div>
